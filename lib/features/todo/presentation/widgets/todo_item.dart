@@ -1,11 +1,12 @@
+import 'package:flutter/material.dart';
 import 'package:clean_architecture_provider/features/todo/domain/entities/todo_entity.dart';
 import 'package:clean_architecture_provider/features/todo/presentation/provider/todo_notifier.dart';
-import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class TodoItem extends StatelessWidget {
   final TodoEntity todoEntity;
-  
+
+  // Constructor to initialize TodoEntity
   const TodoItem({super.key, required this.todoEntity});
 
   @override
@@ -19,13 +20,14 @@ class TodoItem extends StatelessWidget {
         ),
       ),
       child: ListTile(
+        // Delete button to delete the todo item
         leading: IconButton(
-          onPressed: () =>
-              context.read<TodoNotifier>().deleteTodo(todoEntity.id),
+          onPressed: () => _deleteTodo(context),
           icon: const Icon(
             Icons.delete_rounded,
           ),
         ),
+        // Todo item description with strike-through if completed
         title: Text(
           todoEntity.description,
           style: TextStyle(
@@ -34,14 +36,26 @@ class TodoItem extends StatelessWidget {
                 : null,
           ),
         ),
+        // Checkbox to mark the todo item as completed or incomplete
         trailing: Checkbox(
           value: todoEntity.isCompleted,
-          onChanged: (value) => context.read<TodoNotifier>().updateTodo(
-                todoEntity.copyWith(
-                    isCompleted: todoEntity.isCompleted == true ? false : true),
-              ),
+          onChanged: (value) => _updateTodo(context),
         ),
       ),
     );
+  }
+
+  // Function to delete a todo item
+  void _deleteTodo(BuildContext context) {
+    context.read<TodoNotifier>().deleteTodo(todoEntity.id);
+  }
+
+  // Function to update the completion status of a todo item
+  void _updateTodo(BuildContext context) {
+    context.read<TodoNotifier>().updateTodo(
+          todoEntity.copyWith(
+            isCompleted: !todoEntity.isCompleted,
+          ),
+        );
   }
 }

@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:clean_architecture_provider/features/todo/data/datasources/todo_datasource.dart';
 import 'package:clean_architecture_provider/features/todo/data/repositories/todo_repository_impl.dart';
 import 'package:clean_architecture_provider/features/todo/domain/entities/todo_entity.dart';
@@ -6,7 +7,6 @@ import 'package:clean_architecture_provider/features/todo/domain/usecases/add_to
 import 'package:clean_architecture_provider/features/todo/domain/usecases/delete_todo_use_case.dart';
 import 'package:clean_architecture_provider/features/todo/domain/usecases/get_todos_use_case.dart';
 import 'package:clean_architecture_provider/features/todo/domain/usecases/update_todo_use_case.dart';
-import 'package:flutter/material.dart';
 
 // Enum to represent different states of the TodoNotifier
 enum TodoState {
@@ -22,7 +22,7 @@ enum TodoState {
 
 // Notifier class to manage Todo state
 class TodoNotifier extends ChangeNotifier {
-  late TodoRepository _todoRepository;
+  late final TodoRepository _todoRepository;
 
   TodoState _todoState = TodoState.idle;
   String _errorMessage = '';
@@ -36,13 +36,11 @@ class TodoNotifier extends ChangeNotifier {
   List<TodoEntity> get todos => _todos;
 
   // Constructor with dependency injection of TodoRepository
-  TodoNotifier() {
-    _todoRepository = TodoRepositoryImpl(TodoDataSource());
-  }
+  TodoNotifier() : _todoRepository = TodoRepositoryImpl(TodoDataSource());
 
   // Private method to update the state and notify listeners
-  void _setState(
-    TodoState newState, {
+  void _setState({
+    required TodoState newState,
     String errorMessage = '',
     String successMessage = '',
   }) {
@@ -50,69 +48,89 @@ class TodoNotifier extends ChangeNotifier {
     _errorMessage = errorMessage;
     _successMessage = successMessage;
     notifyListeners();
+  }
+
+  // Method to fetch todos
+  Future<void> getTodos() async {
+    _setState(newState: TodoState.fetching); // Set state to fetching
+    try {
+      // Call GetTodosUseCase to fetch todos from repository
+      _todos = await GetTodosUseCase(_todoRepository).call();
+      _setState(
+          newState:
+              TodoState.success); // Set state to success if fetch is successful
+    } catch (e) {
+      _setState(newState: TodoState.error, errorMessage: e.toString());
+      // Set state to error if fetch fails
+    }
+    // Reset state to idle after 5 seconds
     Future.delayed(const Duration(seconds: 5), () {
       _todoState = TodoState.idle;
       notifyListeners();
     });
   }
 
-  // Method to fetch todos
-  Future<void> getTodos() async {
-    _setState(TodoState.fetching); // Set state to fetching
-    try {
-      // Call GetTodosUseCase to fetch todos from repository
-      _todos = await GetTodosUseCase(_todoRepository).call();
-      _setState(
-          TodoState.success); // Set state to success if fetch is successful
-    } catch (e) {
-      _setState(TodoState.error,
-          errorMessage: e.toString()); // Set state to error if fetch fails
-    }
-  }
-
-  // Method to fetch todos
+  // Method to add a todo
   Future<void> addTodo(TodoEntity todoEntity) async {
-    _setState(TodoState.adding);
+    _setState(newState: TodoState.adding);
     try {
-      // Call GetTodosUseCase to fetch todos from repository
+      // Call AddTodoUseCase to add todo to repository
       _todos = await AddTodoUseCase(_todoRepository).call(todoEntity);
 
-      _setState(TodoState.success,
+      _setState(
+          newState: TodoState.success,
           successMessage:
-              "Successfully added"); // Set state to success if fetch is successful
+              "Successfully added"); // Set state to success if add is successful
     } catch (e) {
-      _setState(TodoState.error,
-          errorMessage: e.toString()); // Set state to error if fetch fails
+      _setState(newState: TodoState.error, errorMessage: e.toString());
+      // Set state to error if add fails
     }
+    // Reset state to idle after 5 seconds
+    Future.delayed(const Duration(seconds: 5), () {
+      _todoState = TodoState.idle;
+      notifyListeners();
+    });
   }
 
-  // Method to fetch todos
+  // Method to delete a todo
   Future<void> deleteTodo(String id) async {
-    _setState(TodoState.deleting); // Set state to fetching
+    _setState(newState: TodoState.deleting); // Set state to deleting
     try {
-      // Call GetTodosUseCase to fetch todos from repository
+      // Call DeleteTodoUseCase to delete todo from repository
       _todos = await DeleteTodoUseCase(_todoRepository).call(id);
-      _setState(TodoState.success,
+      _setState(
+          newState: TodoState.success,
           successMessage:
-              "Successfully deleted"); // Set state to success if fetch is successful
+              "Successfully deleted"); // Set state to success if delete is successful
     } catch (e) {
-      _setState(TodoState.error,
-          errorMessage: e.toString()); // Set state to error if fetch fails
+      _setState(newState: TodoState.error, errorMessage: e.toString());
+      // Set state to error if delete fails
     }
+    // Reset state to idle after 5 seconds
+    Future.delayed(const Duration(seconds: 5), () {
+      _todoState = TodoState.idle;
+      notifyListeners();
+    });
   }
 
-  // Method to fetch todos
+  // Method to update a todo
   Future<void> updateTodo(TodoEntity todoEntity) async {
-    _setState(TodoState.updating); // Set state to fetching
+    _setState(newState: TodoState.updating); // Set state to updating
     try {
-      // Call GetTodosUseCase to fetch todos from repository
+      // Call UpdateTodoUseCase to update todo in repository
       _todos = await UpdateTodoUseCase(_todoRepository).call(todoEntity);
-      _setState(TodoState.success,
+      _setState(
+          newState: TodoState.success,
           successMessage:
-              "Successfully updated"); // Set state to success if fetch is successful
+              "Successfully updated"); // Set state to success if update is successful
     } catch (e) {
-      _setState(TodoState.error,
-          errorMessage: e.toString()); // Set state to error if fetch fails
+      _setState(newState: TodoState.error, errorMessage: e.toString());
+      // Set state to error if update fails
     }
+    // Reset state to idle after 5 seconds
+    Future.delayed(const Duration(seconds: 5), () {
+      _todoState = TodoState.idle;
+      notifyListeners();
+    });
   }
 }

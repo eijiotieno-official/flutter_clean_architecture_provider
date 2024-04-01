@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 
 class TodoItem extends StatelessWidget {
   final TodoEntity todoEntity;
+  
   const TodoItem({super.key, required this.todoEntity});
 
   @override

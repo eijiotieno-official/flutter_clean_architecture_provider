@@ -7,11 +7,6 @@ class TodoDataSource {
       description: "Go shopping",
       isCompleted: true,
     ),
-    TodoModel(
-      id: "00b3",
-      description: "Edit video",
-      isCompleted: false,
-    ),
   ];
 
   // Method to fetch all todos asynchronously

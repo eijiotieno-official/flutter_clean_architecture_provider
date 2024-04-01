@@ -13,7 +13,7 @@ class TodoDataSource {
   Future<List<TodoModel>> getTodos() async {
     try {
       // Simulate delay using Future.delayed
-      await Future.delayed(const Duration(seconds: 5));
+      await Future.delayed(const Duration(seconds: 1));
       // Return a copy of the data list to prevent direct manipulation
       return List<TodoModel>.from(data);
     } catch (e) {
@@ -26,7 +26,7 @@ class TodoDataSource {
   Future<List<TodoModel>> addTodo(TodoModel todoModel) async {
     try {
       // Simulate delay using Future.delayed
-      await Future.delayed(const Duration(seconds: 3));
+      await Future.delayed(const Duration(seconds: 1));
       // Add the todo to the data list
       data.add(todoModel);
       return List<TodoModel>.from(data);
@@ -40,15 +40,15 @@ class TodoDataSource {
   Future<List<TodoModel>> deleteTodo(String id) async {
     try {
       // Simulate delay using Future.delayed
-      await Future.delayed(const Duration(seconds: 3));
+      await Future.delayed(const Duration(seconds: 1));
       // Find the todo with the given ID
-      bool todoToRemove = data.any((element) => element.id == id);
+      final index = data.indexWhere((element) => element.id == id);
       // Throw an exception if the todo is not found
-      if (todoToRemove == false) {
+      if (index == -1) {
         throw Exception('Todo with ID $id not found');
       }
       // Remove the todo from the data list
-      data.removeWhere((element) => element.id == id);
+      data.removeAt(index);
       return List<TodoModel>.from(data);
     } catch (e) {
       // Throw an exception with a relevant error message
@@ -59,6 +59,8 @@ class TodoDataSource {
   // Method to update a todo asynchronously
   Future<List<TodoModel>> updateTodo(TodoModel todoModel) async {
     try {
+      // Simulate delay using Future.delayed
+      await Future.delayed(const Duration(seconds: 1));
       // Find the index of the todo to be updated
       final index = data.indexWhere((element) => element.id == todoModel.id);
       // Throw an exception if the todo is not found

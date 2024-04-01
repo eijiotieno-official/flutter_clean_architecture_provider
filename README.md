@@ -27,7 +27,7 @@ To run the application:
 ## Structure
 
 ```
-clean_architecture_todo/
+clean_architecture_provider/
 |-- lib/
 |   |-- features/
 |       |-- todo/

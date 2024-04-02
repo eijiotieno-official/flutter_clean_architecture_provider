@@ -8,65 +8,40 @@ class TodoRepositoryImpl implements TodoRepository {
 
   TodoRepositoryImpl(this._todoDataSource);
 
-  // Fetch all todos from the data source
   @override
   Future<List<TodoEntity>> getTodos() async {
-    try {
-      // Retrieve todos from data source
-      final List<TodoModel> result = await _todoDataSource.getTodos();
-      // Convert data source models to domain entities and return them
-      return result.map((e) => _mapModelToEntity(e)).toList();
-    } catch (e) {
-      // Throw an error if fetching todos fails
-      throw Exception('Failed to fetch todos: $e');
-    }
+    // Fetch todos from the data source
+    final List<TodoModel> result = await _todoDataSource.getTodos();
+    // Map data source models to domain entities and return them
+    return result.map((e) => _mapModelToEntity(e)).toList();
   }
 
-  // Add a new todo to the data source
   @override
   Future<List<TodoEntity>> addTodo(TodoEntity todoEntity) async {
-    try {
-      // Convert domain entity to data source model
-      final TodoModel todoModel = _mapEntityToModel(todoEntity);
-      // Add the todo to the data source
-      final List<TodoModel> result = await _todoDataSource.addTodo(todoModel);
-      // Convert updated models back to entities and return them
-      return result.map((e) => _mapModelToEntity(e)).toList();
-    } catch (e) {
-      // Throw an error if adding todo fails
-      throw Exception('Failed to add todo: $e');
-    }
+    // Map domain entity to data source model
+    final TodoModel todoModel = _mapEntityToModel(todoEntity);
+    // Add todo to the data source
+    final List<TodoModel> result = await _todoDataSource.addTodo(todoModel);
+    // Map updated models back to domain entities and return them
+    return result.map((e) => _mapModelToEntity(e)).toList();
   }
 
-  // Delete a todo from the data source by its ID
   @override
   Future<List<TodoEntity>> deleteTodo(String id) async {
-    try {
-      // Delete the todo from the data source
-      final List<TodoModel> result = await _todoDataSource.deleteTodo(id);
-      // Convert updated models back to entities and return them
-      return result.map((e) => _mapModelToEntity(e)).toList();
-    } catch (e) {
-      // Throw an error if deleting todo fails
-      throw Exception('Failed to delete todo: $e');
-    }
+    // Delete todo from the data source
+    final List<TodoModel> result = await _todoDataSource.deleteTodo(id);
+    // Map updated models back to domain entities and return them
+    return result.map((e) => _mapModelToEntity(e)).toList();
   }
 
-  // Update a todo in the data source
   @override
   Future<List<TodoEntity>> updateTodo(TodoEntity todoEntity) async {
-    try {
-      // Convert domain entity to data source model
-      final TodoModel todoModel = _mapEntityToModel(todoEntity);
-      // Update the todo in the data source
-      final List<TodoModel> result =
-          await _todoDataSource.updateTodo(todoModel);
-      // Convert updated models back to entities and return them
-      return result.map((e) => _mapModelToEntity(e)).toList();
-    } catch (e) {
-      // Throw an error if updating todo fails
-      throw Exception('Failed to update todo: $e');
-    }
+    // Map domain entity to data source model
+    final TodoModel todoModel = _mapEntityToModel(todoEntity);
+    // Update todo in the data source
+    final List<TodoModel> result = await _todoDataSource.updateTodo(todoModel);
+    // Map updated models back to domain entities and return them
+    return result.map((e) => _mapModelToEntity(e)).toList();
   }
 
   // Helper method to map TodoModel to TodoEntity

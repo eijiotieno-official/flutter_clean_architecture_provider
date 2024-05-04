@@ -1,10 +1,10 @@
-import 'package:clean_architecture_provider/features/todo/data/datasources/todo_datasource.dart';
+import 'package:clean_architecture_provider/features/todo/data/datasources/local_todo_datasource.dart';
 import 'package:clean_architecture_provider/features/todo/data/models/todo_model.dart';
 import 'package:clean_architecture_provider/features/todo/domain/entities/todo_entity.dart';
 import 'package:clean_architecture_provider/features/todo/domain/repositories/todo_repository.dart';
 
 class TodoRepositoryImpl implements TodoRepository {
-  final TodoDataSource _todoDataSource;
+  final LocalTodoDataSource _todoDataSource;
 
   TodoRepositoryImpl(this._todoDataSource);
 

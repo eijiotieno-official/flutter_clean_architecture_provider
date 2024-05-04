@@ -1,6 +1,6 @@
 import 'package:clean_architecture_provider/features/todo/data/models/todo_model.dart';
 
-class TodoDataSource {
+class LocalTodoDataSource {
   final List<TodoModel> data = [
     TodoModel(
       id: "00a1",

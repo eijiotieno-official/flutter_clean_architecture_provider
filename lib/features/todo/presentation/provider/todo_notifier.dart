@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:clean_architecture_provider/features/todo/data/datasources/todo_datasource.dart';
+import 'package:clean_architecture_provider/features/todo/data/datasources/local_todo_datasource.dart';
 import 'package:clean_architecture_provider/features/todo/data/repositories/todo_repository_impl.dart';
 import 'package:clean_architecture_provider/features/todo/domain/entities/todo_entity.dart';
 import 'package:clean_architecture_provider/features/todo/domain/repositories/todo_repository.dart';
@@ -36,7 +36,7 @@ class TodoNotifier extends ChangeNotifier {
   List<TodoEntity> get todos => _todos;
 
   // Constructor with dependency injection of TodoRepository
-  TodoNotifier() : _todoRepository = TodoRepositoryImpl(TodoDataSource());
+  TodoNotifier() : _todoRepository = TodoRepositoryImpl(LocalTodoDataSource());
 
   // Private method to update the state and notify listeners
   void _setState({

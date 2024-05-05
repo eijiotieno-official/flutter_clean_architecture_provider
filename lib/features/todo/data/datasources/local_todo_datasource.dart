@@ -1,5 +1,6 @@
 import 'package:clean_architecture_provider/features/todo/data/models/todo_model.dart';
 
+/// Data source responsible for managing local storage of Todo items.
 class LocalTodoDataSource {
   final List<TodoModel> data = [
     TodoModel(
@@ -9,7 +10,7 @@ class LocalTodoDataSource {
     ),
   ];
 
-  // Method to fetch all todos asynchronously
+  /// Fetches all todos asynchronously.
   Future<List<TodoModel>> getTodos() async {
     try {
       // Simulate delay using Future.delayed
@@ -22,7 +23,7 @@ class LocalTodoDataSource {
     }
   }
 
-  // Method to add a todo asynchronously
+  /// Adds a todo asynchronously.
   Future<List<TodoModel>> addTodo(TodoModel todoModel) async {
     try {
       // Simulate delay using Future.delayed
@@ -36,7 +37,7 @@ class LocalTodoDataSource {
     }
   }
 
-  // Method to delete a todo by its ID asynchronously
+  /// Deletes a todo by its ID asynchronously.
   Future<List<TodoModel>> deleteTodo(String id) async {
     try {
       // Simulate delay using Future.delayed
@@ -56,7 +57,7 @@ class LocalTodoDataSource {
     }
   }
 
-  // Method to update a todo asynchronously
+  /// Updates a todo asynchronously.
   Future<List<TodoModel>> updateTodo(TodoModel todoModel) async {
     try {
       // Simulate delay using Future.delayed
